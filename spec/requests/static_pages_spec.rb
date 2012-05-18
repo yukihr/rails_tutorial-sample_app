@@ -8,6 +8,9 @@ describe "StaticPages" do
   #     response.status.should be(200)
   #   end
   # end
+
+  let(:base_title) { "Ruby on Rails Tutorial Sample App" }
+
   describe "Home Page" do
     it "should have the content 'Sample App'" do
       visit '/static_pages/home'
@@ -16,7 +19,7 @@ describe "StaticPages" do
     it "should have the right title 'Home'" do
       visit '/static_pages/home'
       page.should have_selector('title',
-                                :text => "Ruby on Rails Tutorial Sample App | Home")
+                                :text => "#{base_title} | Home")
     end
   end
 
@@ -28,7 +31,7 @@ describe "StaticPages" do
     it "should have the right title 'Help'" do
       visit '/static_pages/help'
       page.should have_selector('title',
-                                :text => "Ruby on Rails Tutorial Sample App | Help")
+                                :text => "#{base_title} | Help")
     end
   end
 
@@ -40,7 +43,7 @@ describe "StaticPages" do
     it "should have the right title 'About Us'" do
       visit '/static_pages/about'
       page.should have_selector('title',
-                                :text => "Ruby on Rails Tutorial Sample App | About Us")
+                                :text => "#{base_title} | About Us")
     end
   end
 
@@ -52,7 +55,7 @@ describe "StaticPages" do
     it "should have the right title 'Contact'" do
       visit '/static_pages/contact'
       page.should have_selector('title',
-                                :text => "Ruby on Rails Tutorial Sample App | Contact")
+                                :text => "#{base_title} | Contact")
     end
   end
 end
