@@ -27,11 +27,12 @@ describe "Authentication" do
 
     describe "with valid information" do
       let(:user) { FactoryGirl.create(:user) }
-      before do
-        fill_in "Email",    with: user.email
-        fill_in "Password", with: user.password
-        click_button "Sign in"
-      end
+      # before do
+      #   fill_in "Email",    with: user.email
+      #   fill_in "Password", with: user.password
+      #   click_button "Sign in"
+      # end
+      before { sign_in user }
 
       it { should have_selector('title', text: user.name) }
 
@@ -61,10 +62,11 @@ describe "Authentication" do
 
       describe "when attempting to visit a protected page" do
         before do
+          sign_in user
           visit edit_user_path(user)
-          fill_in "Email",    with: user.email
-          fill_in "Password", with: user.password
-          click_button "Sign in"
+          # fill_in "Email",    with: user.email
+          # fill_in "Password", with: user.password
+          # click_button "Sign in"
         end
 
         describe "after signing in" do
