@@ -27,11 +27,12 @@ describe "Authentication" do
 
     describe "with valid information" do
       let(:user) { FactoryGirl.create(:user) }
-      before do
-        fill_in "Email",    with: user.email
-        fill_in "Password", with: user.password
-        click_button "Sign in"
-      end
+      # before do
+      #   fill_in "Email",    with: user.email
+      #   fill_in "Password", with: user.password
+      #   click_button "Sign in"
+      # end
+      before { sign_in user }
 
       it { should have_selector('title', text: user.name) }
 
@@ -54,18 +55,31 @@ describe "Authentication" do
     describe "for non-signed-in users" do
       let(:user) { FactoryGirl.create(:user) }
 
+      it { should_not have_link('Users',    href: users_path) }
+      it { should_not have_link('Profile',  href: user_path(user)) }
+      it { should_not have_link('Settings', href: edit_user_path(user)) }
+      it { should_not have_link('Sign out', href: signout_path) }
+
       describe "when attempting to visit a protected page" do
         before do
+          sign_in user
           visit edit_user_path(user)
-          fill_in "Email",    with: user.email
-          fill_in "Password", with: user.password
-          click_button "Sign in"
+          # fill_in "Email",    with: user.email
+          # fill_in "Password", with: user.password
+          # click_button "Sign in"
         end
 
         describe "after signing in" do
 
           it "should render the desired protected page" do
             page.should have_selector('title', text: 'Edit user')
+          end
+          describe "when signing in again" do
+            before { sign_in user }
+
+            it "should render the default (profile) page" do
+              page.should have_selector('title', text: user.name) 
+            end
           end
         end
       end
@@ -89,6 +103,24 @@ describe "Authentication" do
       end
 
     end
+
+    # describe "for signed-in users" do
+    #   let(:user) { FactoryGirl.create(:user) }
+    #   before { sign_in user }
+
+    #   describe "in the Users controller" do
+    #     describe "visiting the new user page" do
+    #       before { visit signup_path }
+    #       specify { response.should redirect_to(root_path) }
+    #     end
+
+    #     describe "create new user" do
+    #       before { post new_user_path(user) }
+    #       specify { response.should redirect_to(root_path) }
+    #     end
+    #   end
+
+    # end
 
     describe "as wrong user" do
       let(:user) { FactoryGirl.create(:user) }
