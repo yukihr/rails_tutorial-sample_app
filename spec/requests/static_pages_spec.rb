@@ -32,6 +32,20 @@ describe "Static pages" do
       it "should render the microposts count" do
         page.should have_content("micropost".pluralize(user.microposts.count))
       end
+
+      describe "feed pagenation" do
+        before(:all) { 30.times { FactoryGirl.create(:micropost, user: user, content: "Foooo") } }
+        after(:all)  { Micropost.delete_all }
+
+        it { should have_selector('div.pagination') }
+
+        it "should list each user" do
+          Micropost.paginate(page: 1).each do |mp|
+            page.should have_selector('li', text: mp.content)
+          end
+        end
+      end
+
     end
   end
 
