@@ -43,4 +43,20 @@ describe "Micropost pages" do
     end
   end
 
+  describe "delete links" do
+    let(:another_user) { FactoryGirl.create(:user) }
+    before(:all) do
+      10.times { FactoryGirl.create(:micropost, user: another_user, content: "Foooo") }
+    end
+    after(:all)  { Micropost.delete_all }
+
+    before { visit user_path(another_user) }
+
+    it "should not create delete link for not current user" do
+      Micropost.paginate(page: 1).each do |mp|
+        should_not have_link("delete", href: micropost_path(mp))
+      end
+    end
+  end
+
 end
