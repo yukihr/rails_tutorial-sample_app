@@ -60,6 +60,18 @@ describe "Authentication" do
       it { should_not have_link('Settings', href: edit_user_path(user)) }
       it { should_not have_link('Sign out', href: signout_path) }
 
+      describe "in the Relationships controller" do
+        describe "submitting to the create action" do
+          before { post relationships_path }
+          specify { response.should redirect_to(signin_path) }
+        end
+
+        describe "submitting to the destroy action" do
+          before { delete relationship_path(1) }
+          specify { response.should redirect_to(signin_path) }          
+        end
+      end
+
       describe "when attempting to visit a protected page" do
         before do
           sign_in user
