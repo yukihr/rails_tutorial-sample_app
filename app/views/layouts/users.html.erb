@@ -1,0 +1,18 @@
+<% content_for :content do %>
+  <% if content_for?:main then %>
+    <div class="row">
+      <aside class="span4">
+        <!-- sections -->
+        <%= yield :sections %>
+      </aside>
+      <div class="span8">
+        <!-- microposts -->
+        <%= yield :main %>
+      </div>
+    </div>
+  <% else %>
+    <%= yield %>
+  <% end %>
+<% end %>
+
+<%= render :file => 'layouts/application' %>

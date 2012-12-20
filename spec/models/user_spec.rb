@@ -54,7 +54,7 @@ describe User do
       expect do
         User.new(admin: true)
       end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end    
+    end
   end
 
   describe "when name is not present" do
