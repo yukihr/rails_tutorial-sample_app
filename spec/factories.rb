@@ -21,4 +21,10 @@ FactoryGirl.define do
     content "Lorem ipsum"
     user
   end
+
+  factory :comment do
+    content "Hoge Huga"
+    user
+    micropost
+  end
 end

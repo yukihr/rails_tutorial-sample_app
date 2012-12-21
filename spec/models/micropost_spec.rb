@@ -38,4 +38,17 @@ describe Micropost do
     before { @micropost.content = "a" * 141 }
     it { should_not be_valid }
   end
+
+  describe "comment associations" do
+    before { @micropost.save }
+    let!(:older_comment) do
+      FactoryGirl.create(:comment, user:user, micropost:@micropost, created_at: 1.day.ago)
+    end
+    let!(:newer_comment) do
+      FactoryGirl.create(:comment, user:user, micropost:@micropost, created_at: 1.hour.ago)
+    end
+    it "should have the right comment in the right order" do
+      @micropost.comments.should == [older_comment, newer_comment]
+    end
+  end
 end
