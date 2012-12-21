@@ -47,8 +47,18 @@ describe Micropost do
     let!(:newer_comment) do
       FactoryGirl.create(:comment, user:user, micropost:@micropost, created_at: 1.hour.ago)
     end
+
     it "should have the right comment in the right order" do
       @micropost.comments.should == [older_comment, newer_comment]
+    end
+
+    it "should destroy associated comments" do
+      comments = @micropost.comments.dup
+      @micropost.destroy
+      comments.should_not be_empty
+      comments.each do |comment|
+        Comment.find_by_id(comment.id).should be_nil
+      end
     end
   end
 end
