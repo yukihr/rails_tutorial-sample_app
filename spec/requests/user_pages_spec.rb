@@ -61,6 +61,8 @@ describe "User pages" do
     let(:user) { FactoryGirl.create(:user) }   # Code to make a user variable
     let!(:m1) { FactoryGirl.create(:micropost, user: user, content: "Foo") }
     let!(:m2) { FactoryGirl.create(:micropost, user: user, content: "Bar") }
+    let!(:c1) { FactoryGirl.create(:comment, micropost: m1, user: user, content: "Foo Foo") }
+    let!(:c2) { FactoryGirl.create(:comment, micropost: m2, user: user, content: "Bar Bar") }
 
     before { visit user_path(user) }
 
@@ -84,6 +86,11 @@ describe "User pages" do
           end
         end
       end
+    end
+
+    describe "comments" do
+      it { should have_content(c1.content) }
+      it { should have_content(c2.content) }
     end
 
     describe "follow/unfollow buttons" do

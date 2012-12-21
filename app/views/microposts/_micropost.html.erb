@@ -1,3 +1,12 @@
 <li>
   <%= render 'microposts/micropost_body', micropost: micropost %>
+  <% if micropost.comments.any? %>
+    <ol>
+      <% for comment in micropost.comments %>
+        <li>
+          <%= render 'comments/comment_body', comment: comment %>
+        </li>
+      <% end %>
+    </ol>
+  <% end %>
 </li>
