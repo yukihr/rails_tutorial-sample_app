@@ -219,6 +219,27 @@ describe User do
     end
   end
 
-  describe "status" do
+  describe "comment associations" do
+    before { @user.save }
+    let!(:micropost) { FactoryGirl.create(:micropost, user:@user) }
+    let!(:older_comment) do
+      FactoryGirl.create(:comment, user:@user, micropost:micropost, created_at: 1.day.ago)
+    end
+    let!(:newer_comment) do
+      FactoryGirl.create(:comment, user:@user, micropost:micropost, created_at: 1.hour.ago)
+    end
+
+    it "should have the right comment in the right order" do
+      @user.comments.should == [older_comment, newer_comment]
+    end
+
+    it "should destroy associated comments" do
+      comments = @user.comments.dup
+      @user.destroy
+      comments.should_not be_empty
+      comments.each do |comment|
+        Comment.find_by_id(comment.id).should be_nil
+      end
+    end
   end
 end
