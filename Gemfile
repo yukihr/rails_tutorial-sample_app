@@ -12,7 +12,7 @@ gem 'bootstrap-will_paginate', '0.0.6'
 
 group :development do
   gem "better_errors"
-  gem "binding_of_caller"
+  gem "binding_of_caller", '~> 0.7.1'
 end
 
 group :development, :test do
